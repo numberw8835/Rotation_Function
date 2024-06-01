@@ -45,8 +45,8 @@ def Rot(matrix):
 
     return matrix
 
-n = 3
-period = 2
+n = 7
+period = 1
 data = []
 
 matrix = np.random.randint(0, 10, size=(n, n))
@@ -59,22 +59,27 @@ for i in range(period):
         rot_det = np.linalg.det(matrix)
         data.append(rot_det)
 
-# Create the figure and axes
-fig, ax = plt.subplots(figsize=(10, 6))
+# Create the figure with two subplots
+fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8), gridspec_kw={'height_ratios': [4, 1]}) # Adjust height ratios as needed
 
-# Plot the data with markers
-ax.plot(data, marker='o', linestyle='-', color='royalblue', linewidth=2)
+# Plot the data on the top subplot
+ax1.plot(data, marker='o', linestyle='-', color='royalblue', linewidth=2)
 
-# Add text labels above each data point
+# Add text labels above each data point (same as before)
 for i, y in enumerate(data):
-    ax.text(i, y, f"{y:.2f}", ha='center', va='bottom', fontsize=10)  # Adjust formatting as needed
+    ax1.text(i, y, f"{y:.2f}", ha='center', va='bottom', fontsize=10)
 
-# Customize labels, title, gridlines (same as before)
-ax.set_xlabel("Rot$^{n}$(A)", fontsize=14)
-ax.set_ylabel("Det(A)", fontsize=14)
-ax.set_title(f'Determinant vs. Rotations of Matrix A_{n}x{n}, and Segment = {period}', fontsize=16)
-ax.grid(axis='y', linestyle='--')
-ax.tick_params(axis='both', which='major', labelsize=12)
+# Add text box annotation for the original matrix on the bottom subplot
+textstr = 'Original Matrix:\n' + str(matrix)
+ax2.text(0.05, 0.5, textstr, fontsize=12, verticalalignment='center')
+ax2.axis('off')  # Turn off axes for the text subplot
+
+# Customize labels, title, gridlines (same as before) for the top subplot
+ax1.set_xlabel("Rot$^{n}$(A)", fontsize=14)
+ax1.set_ylabel("Det(A)", fontsize=14)
+ax1.set_title(f'Determinant vs. Rotations of Matrix A_{n}x{n}, and Segment = {period}', fontsize=16)
+ax1.grid(axis='y', linestyle='--')
+ax1.tick_params(axis='both', which='major', labelsize=12)
 
 # Show the plot
 plt.tight_layout()
