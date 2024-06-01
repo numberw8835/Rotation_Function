@@ -45,40 +45,37 @@ def Rot(matrix):
 
     return matrix
 
+n = 3
+period = 2
+data = []
 
-def determinant(matrix):
-    """Calculates the determinant of a square matrix.
+matrix = np.random.randint(0, 10, size=(n, n))
+org_det = np.linalg.det(matrix)
+data.append(org_det)
+for i in range(period):
+    rot_det = None
+    while org_det != rot_det:
+        matrix = Rot(matrix)
+        rot_det = np.linalg.det(matrix)
+        data.append(rot_det)
 
-    Args:
-        matrix: A list of lists or a NumPy array representing the square matrix.
+# Create the figure and axes
+fig, ax = plt.subplots(figsize=(10, 6))
 
-    Returns:
-        The determinant of the matrix.
+# Plot the data with markers
+ax.plot(data, marker='o', linestyle='-', color='royalblue', linewidth=2)
 
-    Raises:
-        ValueError: If the input matrix is not square.
-    """
-    if not isinstance(matrix, np.ndarray):  # Convert if not a NumPy array
-        matrix = np.array(matrix)
+# Add text labels above each data point
+for i, y in enumerate(data):
+    ax.text(i, y, f"{y:.2f}", ha='center', va='bottom', fontsize=10)  # Adjust formatting as needed
 
-    if matrix.size == 0:
-        return 1
+# Customize labels, title, gridlines (same as before)
+ax.set_xlabel("Rot$^{n}$(A)", fontsize=14)
+ax.set_ylabel("Det(A)", fontsize=14)
+ax.set_title(f'Determinant vs. Rotations of Matrix A_{n}x{n}, and Segment = {period}', fontsize=16)
+ax.grid(axis='y', linestyle='--')
+ax.tick_params(axis='both', which='major', labelsize=12)
 
-    if len(matrix) != len(matrix[0]):
-        raise ValueError("Input must be a square matrix.")
-
-    n = len(matrix)
-
-    if n == 1:
-        return matrix[0][0]  # Base case: 1x1 matrix
-
-    det = 0
-    for j in range(n):
-        cofactor = matrix[0][j] * determinant(get_cofactor(matrix, 0, j))
-        det += (-1) ** j * cofactor
-    return det
-
-
-def get_cofactor(matrix, row, col):
-    return [[matrix[i][j] for j in range(len(matrix[0])) if j != col]
-            for i in range(len(matrix)) if i != row]
+# Show the plot
+plt.tight_layout()
+plt.show()
