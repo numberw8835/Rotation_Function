@@ -1,6 +1,25 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+
+def cullis_radic_determinant(matrix):
+    """
+    Calculate the Cullis-Radic determinant (pseudo-determinant) of a rectangular matrix.
+
+    Parameters:
+    matrix (numpy.ndarray): A rectangular matrix.
+
+    Returns:
+    float: Cullis-Radic determinant of the matrix.
+    """
+    # Compute the singular values of the matrix
+    singular_values = np.linalg.svd(matrix, compute_uv=False)
+
+    # Compute the product of the non-zero singular values
+    pseudo_determinant = np.prod(singular_values[singular_values > 0])
+
+    return pseudo_determinant
+
 def Rot(matrix):
     """Rotates elements within each ring of a matrix one position clockwise.
 
@@ -45,19 +64,32 @@ def Rot(matrix):
 
     return matrix
 
+
 n = 7
+m = 2
 period = 1
 data = []
 
-matrix = np.random.randint(0, 10, size=(n, n))
-org_det = np.linalg.det(matrix)
-data.append(org_det)
-for i in range(period):
-    rot_det = None
-    while org_det != rot_det:
-        matrix = Rot(matrix)
-        rot_det = np.linalg.det(matrix)
-        data.append(rot_det)
+matrix = np.random.randint(0, 10, size=(m, n))
+if m == n:
+    org_det = np.linalg.det(matrix)
+    data.append(org_det)
+    for i in range(period):
+        rot_det = None
+        while org_det != rot_det:
+            matrix = Rot(matrix)
+            rot_det = np.linalg.det(matrix)
+            data.append(rot_det)
+else:
+    org_det = cullis_radic_determinant(matrix)
+    data.append(org_det)
+    for i in range(period):
+        rot_det = None
+        while org_det != rot_det:
+            matrix = Rot(matrix)
+            rot_det = cullis_radic_determinant(matrix)
+            data.append(rot_det)
+
 
 # Create the figure with two subplots
 fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8), gridspec_kw={'height_ratios': [4, 1]}) # Adjust height ratios as needed
@@ -77,7 +109,7 @@ ax2.axis('off')  # Turn off axes for the text subplot
 # Customize labels, title, gridlines (same as before) for the top subplot
 ax1.set_xlabel("Rot$^{n}$(A)", fontsize=14)
 ax1.set_ylabel("Det(A)", fontsize=14)
-ax1.set_title(f'Determinant vs. Rotations of Matrix A_{n}x{n}, and Segment = {period}', fontsize=16)
+ax1.set_title(f'Determinant vs. Rotations of Matrix A_{m}x{n}, and Segment = {period}', fontsize=16)
 ax1.grid(axis='y', linestyle='--')
 ax1.tick_params(axis='both', which='major', labelsize=12)
 
