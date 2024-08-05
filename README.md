@@ -40,8 +40,3 @@ This simple Python script explores the relationship between matrix rotation and 
 ## License
 
 This code is provided under the MIT License. Feel free to use and modify it.
-
-## Acknowledgements
-
-* Thanks to the NumPy and Matplotlib communities for their excellent libraries.
-* Inspiration for this script came from curiosity about the effects of matrix transformations.
