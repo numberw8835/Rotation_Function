@@ -36,7 +36,3 @@ This simple Python script explores the relationship between matrix rotation and 
 * This script is intended for educational purposes and exploration. 
 * The concept of matrix rotation might not have direct applications in all linear algebra scenarios.
 * If you encounter any issues or have suggestions, please feel free to open an issue or pull request.
-
-## License
-
-This code is provided under the MIT License. Feel free to use and modify it.
